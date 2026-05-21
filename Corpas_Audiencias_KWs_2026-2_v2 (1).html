@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audiencias & KWs — FU Juan N. Corpas 2026-2</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#1A1A1A;--yellow:#FFC000;--white:#fff;--bg:#F2F2F0;
+  --t2:#333;--t3:#999;--t4:#666;
+  --green:#2E7D32;--red:#C62828;--blue:#1565C0;
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--black);font-size:13px;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--black);padding:0 20px;display:flex;align-items:center;gap:12px;height:50px;flex-shrink:0;z-index:200}
+.logo{width:32px;height:32px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:var(--black);flex-shrink:0;letter-spacing:-0.5px}
+.topbar-title{color:#fff;font-size:13px;font-weight:600;flex:1;white-space:nowrap}
+.topbar-date{font-size:10px;color:rgba(255,255,255,0.35);white-space:nowrap}
+#search{background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2);border-radius:999px;padding:5px 14px;color:#fff;font-size:11px;font-family:'Poppins',sans-serif;outline:none;width:180px}
+#search::placeholder{color:rgba(255,255,255,0.3)}
+.fbtns{display:flex;gap:4px}
+.fbtn{font-size:10px;padding:3px 10px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.45);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s;white-space:nowrap}
+.fbtn.on{background:rgba(255,192,0,0.2);color:var(--yellow);border-color:rgba(255,192,0,0.5)}
+
+/* ── LAYOUT ── */
+.main{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:252px;flex-shrink:0;background:var(--white);border-right:1px solid #E8E8E8;overflow-y:auto;padding:10px 0}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:#D0D0D0;border-radius:999px}
+.sidebar-section{padding:8px 16px 4px;font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase}
+.prog-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;transition:background .12s;border-left:3px solid transparent}
+.prog-item:hover{background:#F8F8F8}
+.prog-item.active{background:#FFFBEE;border-left-color:var(--yellow)}
+.prog-item .pnum{font-size:9px;color:var(--t3);width:16px;flex-shrink:0}
+.prog-item .pname{font-size:11px;font-weight:500;color:var(--t2);line-height:1.3}
+.prog-item.active .pname{color:var(--black);font-weight:700}
+.prog-item .pbadge{margin-left:auto;font-size:8px;background:#F0F0F0;border-radius:4px;padding:1px 5px;color:var(--t3);white-space:nowrap}
+.prog-item.active .pbadge{background:var(--yellow);color:var(--black)}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:20px 24px;background:var(--bg)}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:#C8C8C8;border-radius:999px}
+
+/* ── PROGRAM PANEL ── */
+.prog-panel{display:none}
+.prog-panel.active{display:block}
+
+/* ── PROG HEADER ── */
+.prog-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:16px}
+.prog-header-left .prog-tag{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.prog-header-left h1{font-size:22px;font-weight:700;color:var(--black);line-height:1.1}
+.prog-header-left .prog-sub{font-size:11px;color:var(--t4);margin-top:3px;font-weight:300}
+.camp-pill{background:var(--black);color:#fff;border-radius:6px;padding:6px 12px;font-size:9px;font-weight:500;line-height:1.5;max-width:340px;text-align:right}
+.camp-pill span{color:var(--yellow)}
+
+/* ── KPIS ── */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.kpi-card{background:var(--white);border-radius:8px;border:0.5px solid #E8E8E8;padding:10px 12px 16px;position:relative;overflow:hidden}
+.kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--yellow)}
+.kpi-card .kv{font-size:20px;font-weight:700;color:var(--black);line-height:1}
+.kpi-card .kl{font-size:8px;font-weight:700;color:var(--t2);margin-top:4px}
+.kpi-card .ks{font-size:7.5px;color:var(--t3);margin-top:2px;font-weight:300}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;margin-bottom:14px;border-bottom:1.5px solid #E8E8E8}
+.tab{padding:7px 18px;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--black)}
+.tab.active{color:var(--black);border-bottom-color:var(--yellow)}
+.tab .tab-icon{font-size:13px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:10px;border:0.5px solid #E8E8E8;padding:14px 16px;margin-bottom:10px}
+.card-title{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+
+/* ── KW TABLE ── */
+.kw-table{width:100%;border-collapse:collapse}
+.kw-table th{text-align:left;font-size:8.5px;font-weight:700;color:var(--t3);padding:5px 8px;border-bottom:1px solid #EEEEEE;white-space:nowrap}
+.kw-table td{padding:5px 8px;font-size:10px;color:var(--t2);border-bottom:0.5px solid #F4F4F4;vertical-align:middle}
+.kw-table tr:last-child td{border-bottom:none}
+.kw-table tr.top td{font-weight:600;background:#FFFEF5}
+.kw-table tr:hover td{background:#FAFAFA}
+.badge{border-radius:4px;padding:1px 5px;font-size:8px;font-weight:600}
+.badge.amplia{background:#E3F2FD;color:#1565C0}
+.badge.exacta{background:#E8F5E9;color:#2E7D32}
+.badge.frase{background:#FFF3E0;color:#E65100}
+.num-good{color:var(--green);font-weight:600}
+.num-zero{color:#CCC}
+.num-warn{color:#E65100;font-weight:600}
+
+/* ── META SECTION ── */
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.meta-card{background:var(--white);border-radius:10px;border:0.5px solid #E8E8E8;padding:14px 16px}
+.meta-card.full{grid-column:1/-1}
+.meta-card h3{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.aud-size-badge{display:inline-flex;align-items:center;gap:6px;background:var(--black);color:#fff;border-radius:20px;padding:4px 12px;font-size:9px;font-weight:700;margin-bottom:10px}
+.aud-size-badge .dot{width:7px;height:7px;background:var(--yellow);border-radius:50%;flex-shrink:0}
+.meta-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+.chip{background:#F4F4F4;border:0.5px solid #E8E8E8;border-radius:5px;padding:3px 8px;font-size:9px;color:var(--t2);font-weight:500}
+.chip.hl{background:var(--yellow);color:var(--black);border-color:var(--yellow);font-weight:700}
+.chip.warn{background:#FFF3E0;color:#E65100;border-color:#FFE0B2}
+.meta-detail{font-size:10px;color:var(--t4);line-height:1.7;font-weight:300}
+.meta-detail strong{color:var(--t2);font-weight:600}
+
+/* ── INSIGHT ── */
+.insight-bar{background:var(--white);border-radius:8px;border:0.5px solid #E8E8E8;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;margin-top:10px}
+.insight-bar::before{content:'💡';font-size:14px;flex-shrink:0;line-height:1.4}
+.insight-bar p{font-size:10px;color:var(--t4);line-height:1.6;font-weight:300}
+.insight-bar p strong{color:var(--black);font-weight:600}
+
+/* ── AUDIENCE BAR VISUAL ── */
+.aud-bar-wrap{background:#F4F4F4;border-radius:6px;height:8px;margin:8px 0 4px;overflow:hidden}
+.aud-bar{height:100%;background:linear-gradient(90deg,var(--yellow),#FFD740);border-radius:6px;transition:width 0.6s ease}
+.aud-bar-labels{display:flex;justify-content:space-between;font-size:8px;color:var(--t3)}
+
+/* ── WARN PANEL ── */
+.warn-panel{background:#FFF8E1;border:0.5px solid #FFE082;border-radius:8px;padding:10px 14px;font-size:10px;color:#5D4037;margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
+.warn-panel::before{content:'⚠️';font-size:13px;flex-shrink:0}
+
+/* ── EMPTY SEARCH ── */
+.no-results{display:none;flex-direction:column;align-items:center;justify-content:center;height:60%;gap:8px;color:var(--t3)}
+.no-results.show{display:flex}
+.no-results .emoji{font-size:36px}
+.no-results p{font-size:12px}
+
+/* ── SCROLLBAR sidebar hidden items ── */
+.prog-item.hidden{display:none}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">JNC</div>
+  <span class="topbar-title">Audiencias por programa — FU Juan N. Corpas</span>
+  <span class="topbar-date">Google Ads: 1 abr – 20 may 2026</span>
+  <div class="fbtns">
+    <button class="fbtn on" onclick="filterCat('all',this)">Todos</button>
+    <button class="fbtn" onclick="filterCat('pre',this)">Pregrado</button>
+    <button class="fbtn" onclick="filterCat('pos',this)">Posgrado</button>
+  </div>
+  <input id="search" type="text" placeholder="Buscar programa…" oninput="searchProgs(this.value)">
+</div>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-section">Pregrado</div>
+  <div class="prog-item active" data-cat="pre" data-panel="medicina" onclick="showProg(this)">
+    <span class="pnum">01</span><span class="pname">Medicina</span><span class="pbadge">211 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pre" data-panel="enfermeria" onclick="showProg(this)">
+    <span class="pnum">02</span><span class="pname">Enfermería</span><span class="pbadge">105 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pre" data-panel="lenguas" onclick="showProg(this)">
+    <span class="pnum">03</span><span class="pname">Lic. Lenguas Ext.</span><span class="pbadge">16 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pre" data-panel="musica" onclick="showProg(this)">
+    <span class="pnum">04</span><span class="pname">Música</span><span class="pbadge">30 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pre" data-panel="premedico" onclick="showProg(this)">
+    <span class="pnum">05</span><span class="pname">Preméd ico</span><span class="pbadge">40 conv.</span>
+  </div>
+
+  <div class="sidebar-section" style="margin-top:8px">Posgrado</div>
+  <div class="prog-item" data-cat="pos" data-panel="epidemiologia" onclick="showProg(this)">
+    <span class="pnum">06</span><span class="pname">Esp. Epidemiología</span><span class="pbadge">21 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="sgca" onclick="showProg(this)">
+    <span class="pnum">07</span><span class="pname">Esp. SGCA</span><span class="pbadge">11 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="tafv" onclick="showProg(this)">
+    <span class="pnum">08</span><span class="pname">Esp. TAFV</span><span class="pbadge">Sin datos</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="edusalud" onclick="showProg(this)">
+    <span class="pnum">09</span><span class="pname">Mtra. Edu. Salud</span><span class="pbadge">12 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="ling" onclick="showProg(this)">
+    <span class="pnum">10</span><span class="pname">Mtra. Ling. Aplicada</span><span class="pbadge">0 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="saludpub" onclick="showProg(this)">
+    <span class="pnum">11</span><span class="pname">Mtra. Salud Pública</span><span class="pbadge">9 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="medfam" onclick="showProg(this)">
+    <span class="pnum">12</span><span class="pname">Esp. Med. Familiar</span><span class="pbadge">1 conv.</span>
+  </div>
+  <div class="prog-item" data-cat="pos" data-panel="mba" onclick="showProg(this)">
+    <span class="pnum">13</span><span class="pname">MBA</span><span class="pbadge">4 conv.</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
+<div class="no-results" id="noResults">
+  <div class="emoji">🔍</div>
+  <p>No se encontraron programas</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     01 MEDICINA
+═══════════════════════════════════════ -->
+<div class="prog-panel active" id="panel-medicina">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Pregrado · 01</div>
+      <h1>Medicina</h1>
+      <div class="prog-sub">Ciencias de la Salud — Pregrado presencial Bogotá</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_pregrado-medicina-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">37.9K</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">3,551</div><div class="kl">Clics</div><div class="ks">CTR 9.4%</div></div>
+    <div class="kpi-card"><div class="kv">$6.1M</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $1,709</div></div>
+    <div class="kpi-card"><div class="kv">211</div><div class="kl">Conversiones</div><div class="ks">CPL $28,772</div></div>
+    <div class="kpi-card"><div class="kv">48</div><div class="kl">KWs activas</div><div class="ks">Mayoría Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'medicina-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'medicina-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <!-- META -->
+  <div class="tab-content active" id="medicina-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>183,200 – 215,600 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:18%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 18–30 años</span>
+          <span class="chip">Todos los géneros</span>
+        </div>
+        <div class="meta-detail"><strong>Controles:</strong> No advertising settings set — Broad</div>
+        <div class="meta-detail" style="margin-top:4px"><strong>Exclusión:</strong> Bogotá +10km Distrito Especial</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Natural science</span><span class="chip hl">Medical school</span>
+          <span class="chip hl">Biology</span><span class="chip hl">Chemistry</span>
+          <span class="chip">University</span><span class="chip">College</span>
+          <span class="chip">Higher education</span><span class="chip">Student</span>
+          <span class="chip">Undergraduate education</span><span class="chip">Private university</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Campo de estudio:</strong> Pre-Med, Pre-Med/Biology, Biomedical sciences, Biology Major (Pre-Med), Biology/Pre-Medicine<br>
+          <strong>Cargo:</strong> Doctor, Doctor (Dr) &nbsp;|&nbsp; <strong>Industria:</strong> Healthcare and Medical Services
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia de <strong>183K–215K personas</strong> bien calificada para Medicina. Mix de intereses académicos (pre-med, biología) con perfil laboral (Doctor) permite alcanzar tanto estudiantes próximos a graduarse como profesionales que buscan formalizar.</p></div>
+  </div>
+  <!-- GOOGLE -->
+  <div class="tab-content" id="medicina-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas (ordenadas por impresiones)</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>medicina humana</td><td><span class="badge amplia">Amplia</span></td><td>12,766</td><td>802</td><td>6.3%</td><td class="num-good">61</td><td>$1,988</td></tr>
+          <tr><td>universidad corpas medicina</td><td><span class="badge amplia">Amplia</span></td><td>9,029</td><td>1,228</td><td>13.6%</td><td class="num-good">79</td><td>$1,736</td></tr>
+          <tr><td>universidad militar medicina</td><td><span class="badge amplia">Amplia</span></td><td>6,619</td><td>576</td><td>8.7%</td><td>22</td><td>$1,806</td></tr>
+          <tr><td>medicina universidad corpas</td><td><span class="badge amplia">Amplia</span></td><td>2,642</td><td>162</td><td>6.1%</td><td>4</td><td>$1,918</td></tr>
+          <tr><td>clinica corpas</td><td><span class="badge amplia">Amplia</span></td><td>1,275</td><td>218</td><td>17.1%</td><td>1</td><td>$145</td></tr>
+          <tr><td>medicina</td><td><span class="badge amplia">Amplia</span></td><td>1,197</td><td>51</td><td>4.3%</td><td>2</td><td>$1,370</td></tr>
+          <tr><td>medicina corpas</td><td><span class="badge amplia">Amplia</span></td><td>709</td><td>151</td><td>21.3%</td><td class="num-good">14</td><td>$1,441</td></tr>
+          <tr><td>corpas medicina inscripciones</td><td><span class="badge amplia">Amplia</span></td><td>479</td><td>29</td><td>6.1%</td><td>4</td><td>$2,384</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>"universidad corpas medicina"</strong> lidera conversiones (79) con CTR 13.6%. <strong>"medicina corpas"</strong> tiene el mejor CVR relativo. Agregar concordancia exacta [universidad corpas medicina] para proteger tráfico de marca y reducir CPC.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     02 ENFERMERIA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-enfermeria">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Pregrado · 02</div>
+      <h1>Enfermería</h1>
+      <div class="prog-sub">Ciencias de la Salud — Pregrado presencial Bogotá</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_pregrado-enfermeria-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">12.8K</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">1,275</div><div class="kl">Clics</div><div class="ks">CTR 9.9%</div></div>
+    <div class="kpi-card"><div class="kv">$2.3M</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $1,793</div></div>
+    <div class="kpi-card"><div class="kv">105</div><div class="kl">Conversiones</div><div class="ks">CPL $21,874</div></div>
+    <div class="kpi-card"><div class="kv">38</div><div class="kl">KWs activas</div><div class="ks">Amplia + Exacta</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'enfermeria-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'enfermeria-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="enfermeria-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>72,200 – 84,900 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:60%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 18–30 años</span>
+          <span class="chip warn">Excl. Soacha +10km</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px"><strong>Tipo audiencia:</strong> Broad — puede mejorar performance</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Salud Nutricion y Bienestar</span>
+          <span class="chip hl">Medical drama</span>
+          <span class="chip hl">Enfermera Profesional (emp.)</span>
+          <span class="chip">Biology</span><span class="chip">Social science</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Campo de estudio:</strong> Lic. en Enfermeria, Enfermería geriátrica<br>
+          <strong>Cargo:</strong> Nurse educator, TECNICO AUXILIAR DE ENFERMERIA, Enfermera Profesional, enfermero<br>
+          <strong>Escuela:</strong> Facultad de Medicina &nbsp;|&nbsp; <strong>Industria:</strong> Healthcare and Medical Services
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia <strong>72K–85K</strong> más acotada que Medicina — muy orientada a perfiles ya vinculados al sector salud (técnicos, auxiliares, enfermeras). Considera ampliar con intereses de educación superior para capturar aspirantes de bachillerato.</p></div>
+  </div>
+  <div class="tab-content" id="enfermeria-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>estudiar enfermeria</td><td><span class="badge amplia">Amplia</span></td><td>5,639</td><td>529</td><td>9.4%</td><td class="num-good">45</td><td>$1,967</td></tr>
+          <tr><td>estudiar enfermería</td><td><span class="badge amplia">Amplia</span></td><td>3,625</td><td>361</td><td>10.0%</td><td class="num-good">23</td><td>$1,612</td></tr>
+          <tr><td>univ. Juan N Corpas enfermeria</td><td><span class="badge amplia">Amplia</span></td><td>1,212</td><td>105</td><td>8.7%</td><td>9</td><td>$1,860</td></tr>
+          <tr><td>[enfermería]</td><td><span class="badge exacta">Exacta</span></td><td>397</td><td>25</td><td>6.3%</td><td>2</td><td>$1,721</td></tr>
+          <tr><td>enfermeria juan n corpas</td><td><span class="badge amplia">Amplia</span></td><td>195</td><td>36</td><td>18.5%</td><td>3</td><td>$1,338</td></tr>
+          <tr><td>[jefe de enfermería]</td><td><span class="badge exacta">Exacta</span></td><td>163</td><td>15</td><td>9.2%</td><td>3</td><td>$2,402</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>"estudiar enfermeria/ía"</strong> acumula 9,264 impr. y 68 conversiones — KW principal del programa. CPL de $21.8K es el <strong>mejor de pregrado</strong>. Doble variante (con/sin tilde) es intencional y bien justificada.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     03 LIC LENGUAS
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-lenguas">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Pregrado · 03</div>
+      <h1>Lic. Lenguas Extranjeras</h1>
+      <div class="prog-sub">Ciencias Humanas — Licenciatura presencial Bogotá</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_pregrado-lic-lenguas-extranjeras-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">8,974</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">572</div><div class="kl">Clics</div><div class="ks">CTR 6.4%</div></div>
+    <div class="kpi-card"><div class="kv">$1.2M</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $2,054</div></div>
+    <div class="kpi-card"><div class="kv">16</div><div class="kl">Conversiones</div><div class="ks">CPL $73,114</div></div>
+    <div class="kpi-card"><div class="kv">23</div><div class="kl">KWs activas</div><div class="ks">Todo Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'lenguas-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'lenguas-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="lenguas-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>138,600 – 163,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:65%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 18–30 años</span>
+          <span class="chip warn">Excl. Soacha +10km</span>
+        </div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Language education</span><span class="chip hl">IELTS</span>
+          <span class="chip hl">TOEFL</span><span class="chip hl">Bilingual education</span>
+          <span class="chip hl">Duolingo</span><span class="chip hl">Foreign language</span>
+          <span class="chip">University</span><span class="chip">Basic English</span>
+          <span class="chip">English language</span><span class="chip">Language school</span>
+          <span class="chip">Bachelor's degree</span><span class="chip">Higher education</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> In high school, High school grad, Some college
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia <strong>138K–163K</strong> con excelente cobertura de perfil bilingüe (IELTS, TOEFL, Duolingo). El nivel educativo incluye bachilleres y estudiantes universitarios — audiencia correcta para licenciatura.</p></div>
+  </div>
+  <div class="tab-content" id="lenguas-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>lenguas modernas bogota</td><td><span class="badge amplia">Amplia</span></td><td>3,444</td><td>208</td><td>6.0%</td><td>8</td><td>$1,877</td></tr>
+          <tr><td>licenciatura en idiomas</td><td><span class="badge amplia">Amplia</span></td><td>1,621</td><td>121</td><td>7.5%</td><td class="num-zero">0</td><td>$1,499</td></tr>
+          <tr><td>carrera de lenguas</td><td><span class="badge amplia">Amplia</span></td><td>718</td><td>30</td><td>4.2%</td><td>2</td><td>$3,337</td></tr>
+          <tr><td>lenguas modernas</td><td><span class="badge amplia">Amplia</span></td><td>645</td><td>54</td><td>8.4%</td><td>1</td><td>$1,679</td></tr>
+          <tr><td>estudiar lenguas</td><td><span class="badge amplia">Amplia</span></td><td>462</td><td>27</td><td>5.8%</td><td>3</td><td>$6,069</td></tr>
+          <tr><td>inscripciones lenguas extranjeras</td><td><span class="badge amplia">Amplia</span></td><td>427</td><td>20</td><td>4.7%</td><td class="num-zero">0</td><td>$2,122</td></tr>
+          <tr><td>carrera lenguas extranjeras</td><td><span class="badge amplia">Amplia</span></td><td>259</td><td>19</td><td>7.3%</td><td class="num-zero">0</td><td>$2,446</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p>CPL de <strong>$73K</strong> es el más alto de pregrado. <strong>"licenciatura en idiomas"</strong> trae 121 clics sin ninguna conversión — revisar landing page para ese segmento. Agregar KWs de marca en exacta: [lenguas extranjeras corpas].</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     04 MUSICA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-musica">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Pregrado · 04</div>
+      <h1>Música</h1>
+      <div class="prog-sub">Bellas Artes — Pregrado presencial Bogotá</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_pregrado-musica-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">6,783</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">692</div><div class="kl">Clics</div><div class="ks">CTR 10.2%</div></div>
+    <div class="kpi-card"><div class="kv">$1.2M</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $1,692</div></div>
+    <div class="kpi-card"><div class="kv">30</div><div class="kl">Conversiones</div><div class="ks">CPL $39,027</div></div>
+    <div class="kpi-card"><div class="kv">19</div><div class="kl">KWs activas</div><div class="ks">Amplia + Exacta</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'musica-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'musica-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="musica-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>3,000,000 – 3,600,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:85%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +40km</span>
+          <span class="chip hl">🎂 18–30 años</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Radio ampliado a 40km — mayor alcance que otros pregrados.</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Music industry</span><span class="chip hl">Singing</span>
+          <span class="chip hl">Musical instrument</span><span class="chip hl">Guitar</span>
+          <span class="chip hl">Arts and music</span>
+          <span class="chip">Music</span><span class="chip">University</span>
+          <span class="chip">Higher education</span><span class="chip">Undergraduate education</span>
+          <span class="chip">Educational resources</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> Some college, Professional degree &nbsp;|&nbsp; <strong>Campo de estudio:</strong> Music education
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia de <strong>3M–3.6M</strong> — la más grande de pregrado. Radio 40km amplía cobertura a Cundinamarca. Intereses musicales muy específicos (instrumento, canto, industria) garantizan relevancia del segmento.</p></div>
+  </div>
+  <div class="tab-content" id="musica-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>escuela de musica</td><td><span class="badge amplia">Amplia</span></td><td>3,614</td><td>310</td><td>8.6%</td><td class="num-good">18</td><td>$1,592</td></tr>
+          <tr><td>escuela de musica bogota</td><td><span class="badge amplia">Amplia</span></td><td>1,565</td><td>130</td><td>8.3%</td><td>5</td><td>$1,461</td></tr>
+          <tr><td>[universidad Corpas]</td><td><span class="badge exacta">Exacta</span></td><td>584</td><td>152</td><td>26.0%</td><td class="num-good">7</td><td>$1,948</td></tr>
+          <tr><td>carrera de musica</td><td><span class="badge amplia">Amplia</span></td><td>185</td><td>14</td><td>7.6%</td><td class="num-zero">0</td><td>$2,403</td></tr>
+          <tr><td>universidades de musica</td><td><span class="badge amplia">Amplia</span></td><td>184</td><td>8</td><td>4.3%</td><td class="num-zero">0</td><td>$1,997</td></tr>
+          <tr><td>[academia de musica Bogotá]</td><td><span class="badge exacta">Exacta</span></td><td>89</td><td>11</td><td>12.4%</td><td class="num-zero">0</td><td>$1,185</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>Mejor CTR de pregrado: 10.2%</strong>. [universidad Corpas] exacta tiene un CTR del 26% — la KW de marca más eficiente del programa. "escuela de musica" aporta el 60% de las conversiones.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     05 PREMEDICO
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-premedico">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Pregrado · 05</div>
+      <h1>Preméd ico</h1>
+      <div class="prog-sub">Ciencias Básicas — Curso preuniversitario</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_premedico-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">8,060</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">761</div><div class="kl">Clics</div><div class="ks">CTR 9.4%</div></div>
+    <div class="kpi-card"><div class="kv">$2.0M</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $2,574</div></div>
+    <div class="kpi-card"><div class="kv">40</div><div class="kl">Conversiones</div><div class="ks">CPL $49,483</div></div>
+    <div class="kpi-card"><div class="kv">33</div><div class="kl">KWs activas</div><div class="ks">Todo Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'pre-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'pre-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="pre-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>81,900 – 96,300 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:30%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 18–25 años</span>
+          <span class="chip warn">Excl. Soacha +10km</span>
+        </div>
+        <div class="warn-panel" style="margin-top:8px;margin-bottom:0">Audiencia <strong>bastante estrecha</strong> — puede impactar el delivery. Considerar ampliar rango de edad o radio.</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Medical school</span><span class="chip hl">Biology</span>
+          <span class="chip hl">Chemistry</span><span class="chip hl">Molecular biology</span>
+          <span class="chip hl">Biochemistry</span><span class="chip hl">Biotechnology</span>
+          <span class="chip">Science</span><span class="chip">Laboratory</span>
+          <span class="chip">Physics</span><span class="chip">University</span>
+          <span class="chip">Higher education</span><span class="chip">Student</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> In high school, High school grad, Some college, Some high school &nbsp;|&nbsp; <strong>Industria:</strong> Healthcare and Medical Services
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia estrecha pero muy calificada — estudiantes de bachillerato y recién graduados con interés en ciencias biomédicas. El nivel educativo "in high school" es clave para capturar aspirantes en etapa de decisión.</p></div>
+  </div>
+  <div class="tab-content" id="pre-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>premedico</td><td><span class="badge amplia">Amplia</span></td><td>3,685</td><td>338</td><td>9.2%</td><td class="num-good">16</td><td>$2,527</td></tr>
+          <tr><td>premedico virtual</td><td><span class="badge amplia">Amplia</span></td><td>701</td><td>55</td><td>7.8%</td><td>1</td><td>$2,747</td></tr>
+          <tr><td>pre-universitario Medicina</td><td><span class="badge amplia">Amplia</span></td><td>664</td><td>54</td><td>8.1%</td><td>1</td><td>$3,118</td></tr>
+          <tr><td>univ. para estudiar medicina Bog.</td><td><span class="badge amplia">Amplia</span></td><td>627</td><td>65</td><td>10.4%</td><td>2</td><td>$2,773</td></tr>
+          <tr><td>pre medico bogota</td><td><span class="badge amplia">Amplia</span></td><td>326</td><td>21</td><td>6.4%</td><td class="num-zero">0</td><td>$3,156</td></tr>
+          <tr><td>premedico corpas</td><td><span class="badge amplia">Amplia</span></td><td>268</td><td>25</td><td>9.3%</td><td>2</td><td>$2,214</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>"premedico"</strong> aporta el 40% de las conversiones. CPC promedio alto ($2,574) comparado con otros pregrados — revisar estrategia de pujas. Agregar KW: [premedico corpas] en exacta para proteger marca.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     06 ESP EPIDEMIOLOGIA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-epidemiologia">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 06</div>
+      <h1>Esp. Epidemiología</h1>
+      <div class="prog-sub">Especialización — Ciencias de la Salud</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-especializacion-epidemiologia-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">2,358</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">419</div><div class="kl">Clics</div><div class="ks">CTR 17.8%</div></div>
+    <div class="kpi-card"><div class="kv">$352K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $840</div></div>
+    <div class="kpi-card"><div class="kv">21</div><div class="kl">Conversiones</div><div class="ks">CPL $16,837</div></div>
+    <div class="kpi-card"><div class="kv">11</div><div class="kl">KWs activas</div><div class="ks">Amplia + Exacta</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'epi-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'epi-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="epi-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>179,600 – 211,300 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:72%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 26–45 años</span>
+          <span class="chip warn">Excl. Soacha +10km</span>
+        </div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Epidemiology</span><span class="chip hl">Public health</span>
+          <span class="chip hl">Global health</span><span class="chip hl">Biomedical sciences</span>
+          <span class="chip hl">Community health</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Master's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Escuela:</strong> Public health &nbsp;|&nbsp; <strong>Campo:</strong> Epidemiology, Public health, Biomedical engineering, Biomedical technology<br>
+          <strong>Empleadores:</strong> Public health &nbsp;|&nbsp; <strong>Cargo:</strong> Public health, Epidemiologist &nbsp;|&nbsp; <strong>Industria:</strong> Healthcare and Medical Services
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia bien construida con intereses y cargos muy específicos del campo (Epidemiologist, Public health). El rango 26–45 es correcto para un posgrado de perfil profesional.</p></div>
+  </div>
+  <div class="tab-content" id="epi-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>maestria en epidemiologia</td><td><span class="badge amplia">Amplia</span></td><td>956</td><td>77</td><td>8.1%</td><td>4</td><td>$1,456</td></tr>
+          <tr><td>[universidad Juan N. Corpas]</td><td><span class="badge exacta">Exacta</span></td><td>614</td><td>149</td><td>24.3%</td><td>4</td><td>$476</td></tr>
+          <tr><td>[corpas posgrados]</td><td><span class="badge exacta">Exacta</span></td><td>297</td><td>102</td><td>34.3%</td><td>2</td><td>$328</td></tr>
+          <tr><td>[especializacion epidemiologia]</td><td><span class="badge exacta">Exacta</span></td><td>183</td><td>24</td><td>13.1%</td><td>4</td><td>$1,625</td></tr>
+          <tr><td>[especializacion en epidemiologia]</td><td><span class="badge exacta">Exacta</span></td><td>162</td><td>26</td><td>16.0%</td><td>2</td><td>$1,782</td></tr>
+          <tr><td>[epidemiologia corpas]</td><td><span class="badge exacta">Exacta</span></td><td>52</td><td>26</td><td>50.0%</td><td class="num-good">6</td><td>$1,040</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>Mejor CPL del portafolio: $16,837</strong> con CTR general 17.8%. <strong>[epidemiologia corpas]</strong> tiene un CTR del 50% — extraordinario. <strong>[corpas posgrados]</strong> con CPC de solo $328 es muy eficiente.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     07 SGCA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-sgca">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 07</div>
+      <h1>Esp. SGCA</h1>
+      <div class="prog-sub">Sistema de Garantía de Calidad — Auditoría de Servicios de Salud</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-especializacion-sgca-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">1,823</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">391</div><div class="kl">Clics</div><div class="ks">CTR 21.5%</div></div>
+    <div class="kpi-card"><div class="kv">$388K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $991</div></div>
+    <div class="kpi-card"><div class="kv">11</div><div class="kl">Conversiones</div><div class="ks">CPL $35,252</div></div>
+    <div class="kpi-card"><div class="kv">30</div><div class="kl">KWs activas</div><div class="ks">Amplia + Exacta</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'sgca-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'sgca-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="sgca-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>368,500 – 433,600 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:78%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 26–45 años</span>
+          <span class="chip warn">Excl. Soacha +10km</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Audiencia como sugerencia (Use as suggestion ✓)</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Quality control</span><span class="chip hl">Business administration</span>
+          <span class="chip hl">Organization</span>
+          <span class="chip">University</span><span class="chip">College</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Higher education</span>
+          <span class="chip">Education</span><span class="chip">Master's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Escuela:</strong> Facultad de Medicina
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia amplia <strong>368K–433K</strong>. "Quality control" + "Business administration" son los intereses diferenciadores para SGCA. Buena cobertura de profesionales de salud con perfil gerencial.</p></div>
+  </div>
+  <div class="tab-content" id="sgca-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>posgrados corpas</td><td><span class="badge amplia">Amplia</span></td><td>997</td><td>263</td><td>26.4%</td><td class="num-good">7</td><td>$728</td></tr>
+          <tr><td>especializacion auditoria salud</td><td><span class="badge amplia">Amplia</span></td><td>358</td><td>35</td><td>9.8%</td><td>2</td><td>$1,663</td></tr>
+          <tr><td>[universidad Juan N. Corpas]</td><td><span class="badge exacta">Exacta</span></td><td>317</td><td>73</td><td>23.0%</td><td>1</td><td>$1,403</td></tr>
+          <tr><td>universidad Juan N. Corpas</td><td><span class="badge amplia">Amplia</span></td><td>98</td><td>16</td><td>16.3%</td><td>1</td><td>$1,807</td></tr>
+          <tr><td>[esp. en auditoría en salud]</td><td><span class="badge exacta">Exacta</span></td><td>24</td><td>1</td><td>4.2%</td><td class="num-zero">0</td><td>$2,229</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>CTR más alto del portafolio: 21.5%</strong>. <strong>"posgrados corpas"</strong> con CTR 26.4% y CPC $728 aporta 7/11 conversiones — KW de marca institucional extremadamente eficiente.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     08 TAFV
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-tafv">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 08</div>
+      <h1>Esp. TAFV</h1>
+      <div class="prog-sub">Terapéuticas Alternativas y Farmacología Vegetal</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-especializacion-tafv-2026-I</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv" style="color:var(--t3)">—</div><div class="kl">Impresiones</div><div class="ks">Sin entrega aún</div></div>
+    <div class="kpi-card"><div class="kv" style="color:var(--t3)">—</div><div class="kl">Clics</div><div class="ks">Campaña nueva</div></div>
+    <div class="kpi-card"><div class="kv" style="color:var(--t3)">$0</div><div class="kl">Inversión</div><div class="ks">Por activar</div></div>
+    <div class="kpi-card"><div class="kv" style="color:var(--t3)">0</div><div class="kl">Conversiones</div><div class="ks">N/A</div></div>
+    <div class="kpi-card"><div class="kv">12</div><div class="kl">KWs listas</div><div class="ks">Sin entrega</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'tafv-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'tafv-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="tafv-meta">
+    <div class="warn-panel">Campaña Google sin datos de entrega en el período analizado (1 abr – 20 may 2026). Audiencia Meta configurada y lista.</div>
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>5,900,000 – 7,000,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:92%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Colombia: Cundinamarca</span>
+          <span class="chip hl">🎂 26–45 años</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Edad como sugerencia (Use as suggestion ✓)</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Terapia</span><span class="chip hl">Salud</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Higher education</span>
+          <span class="chip">Master's degree</span><span class="chip">Bachelor's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> Some grad school, Master's degree, Professional degree, Doctorate degree, Some high school<br>
+          <strong>Campo:</strong> Terapia Física y Rehabilitación, Fisioterapia y Rehabilitación<br>
+          <strong>Cargo:</strong> Doctor, Medico Interno, Doctor (Dr)
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia muy amplia <strong>5.9M–7M</strong> en Cundinamarca. Monitorear primeras semanas de entrega y ajustar frecuencia de caps. Activar KWs de marca Corpas como complemento urgente.</p></div>
+  </div>
+  <div class="tab-content" id="tafv-google" style="display:none">
+    <div class="warn-panel">Sin datos de entrega para este período. Las keywords están configuradas pero la campaña no ha generado impresiones ni clics.</div>
+    <div class="card">
+      <div class="card-title">Keywords configuradas (sin datos)</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>especializacion medicina alternativa colombia</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+          <tr><td>especializacion terapias alternativas bogota</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+          <tr><td>especializacion en terapias alternativas</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+          <tr><td>farmacología medicina</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+          <tr><td>posgrado terapias alternativas</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+          <tr><td>maestria terapia alternativa</td><td><span class="badge amplia">Amplia</span></td><td>Sin datos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     09 MAESTRIA EDU SALUD
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-edusalud">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 09</div>
+      <h1>Mtra. Educación para la Salud</h1>
+      <div class="prog-sub">Maestría — Ciencias de la Salud y Educación</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-maestria-educacion-para-la-salud-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">6,388</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">2,135</div><div class="kl">Clics</div><div class="ks">CTR 33.4%</div></div>
+    <div class="kpi-card"><div class="kv">$386K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $181</div></div>
+    <div class="kpi-card"><div class="kv">12</div><div class="kl">Conversiones</div><div class="ks">CPL $32,154</div></div>
+    <div class="kpi-card"><div class="kv">47</div><div class="kl">KWs activas</div><div class="ks">Exacta + Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'edu-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'edu-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="edu-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>6,300,000 – 7,400,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:90%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Colombia: Cundinamarca</span>
+          <span class="chip hl">🎂 26–45 años</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Edad como sugerencia ✓</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Teacher education</span><span class="chip hl">Medical school</span>
+          <span class="chip hl">Salud</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Master's degree</span>
+          <span class="chip">Higher education</span><span class="chip">Student</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> Some grad school, Master's degree, Professional degree, Doctorate degree<br>
+          <strong>Cargo:</strong> Doctor, Medico Interno, Doctor (Dr)
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia de <strong>6.3M–7.4M</strong> en Cundinamarca — muy amplia. El mix "Teacher education + Medical school" es diferenciador correcto para una maestría en educación para la salud.</p></div>
+  </div>
+  <div class="tab-content" id="edu-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>[UNIVERSIDAD JUAN N CORPAS]</td><td><span class="badge exacta">Exacta</span></td><td>5,362</td><td>1,936</td><td>36.1%</td><td class="num-good">10</td><td>$123</td></tr>
+          <tr><td>maestria en educacion medica (Sabana)</td><td><span class="badge amplia">Amplia</span></td><td>589</td><td>122</td><td>20.7%</td><td>1</td><td>$373</td></tr>
+          <tr><td>maestria en admin. inst. salud</td><td><span class="badge amplia">Amplia</span></td><td>133</td><td>28</td><td>21.1%</td><td class="num-zero">0</td><td>$1,332</td></tr>
+          <tr><td>Maestría educación para la salud</td><td><span class="badge amplia">Amplia</span></td><td>108</td><td>17</td><td>15.7%</td><td class="num-zero">0</td><td>$1,600</td></tr>
+          <tr><td>maestria en gerencia en salud</td><td><span class="badge amplia">Amplia</span></td><td>42</td><td>6</td><td>14.3%</td><td class="num-zero">0</td><td>$2,033</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>CTR excepcional: 33.4%</strong> impulsado por [UNIVERSIDAD JUAN N CORPAS] exacta con CPC de solo $123. Es la KW más eficiente de todo el portafolio. Las KWs genéricas de maestría tienen 0 conversiones — revisar match entre anuncio y landing.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     10 MAESTRIA LING
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-ling">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 10</div>
+      <h1>Mtra. Lingüística Aplicada</h1>
+      <div class="prog-sub">Maestría — Humanidades y Ciencias del Lenguaje</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-maestria-linguistica-aplicada-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">628</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">60</div><div class="kl">Clics</div><div class="ks">CTR 9.6%</div></div>
+    <div class="kpi-card"><div class="kv">$67K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $1,123</div></div>
+    <div class="kpi-card"><div class="kv" style="color:var(--red)">0</div><div class="kl">Conversiones</div><div class="ks">Oportunidad</div></div>
+    <div class="kpi-card"><div class="kv">9</div><div class="kl">KWs activas</div><div class="ks">Todo Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'ling-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'ling-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="ling-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>6,300,000 – 7,400,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:90%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Colombia: Cundinamarca</span>
+          <span class="chip hl">🎂 26–45 años</span>
+          <span class="chip">All languages</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Edad como sugerencia ✓</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Teacher education</span><span class="chip hl">Medical school</span>
+          <span class="chip hl">Salud</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Master's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> Some grad school, Master's degree, Professional degree, Doctorate degree<br>
+          <strong>Cargo:</strong> Doctor, Medico Interno, Doctor (Dr)
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>⚠️ La audiencia Meta es idéntica a Edu. Salud — no tiene segmentos específicos de lingüística o lenguaje. Considerar añadir intereses: Language education, Linguistics, Teaching English as Foreign Language (TEFL), Applied linguistics.</p></div>
+  </div>
+  <div class="tab-content" id="ling-google" style="display:none">
+    <div class="warn-panel">0 conversiones en el período. Casi todo el tráfico (627/628 impr.) viene de la KW de marca genérica sin intención específica de lingüística.</div>
+    <div class="card">
+      <div class="card-title">Keywords Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>universidad Juan N. Corpas</td><td><span class="badge amplia">Amplia</span></td><td>627</td><td>60</td><td>9.6%</td><td class="num-zero">0</td></tr>
+          <tr><td>lingüística</td><td><span class="badge amplia">Amplia</span></td><td>1</td><td>0</td><td>0%</td><td class="num-zero">0</td></tr>
+          <tr><td>maestría en lingüística</td><td><span class="badge amplia">Amplia</span></td><td>0</td><td>0</td><td>—</td><td class="num-zero">0</td></tr>
+          <tr><td>maestria educacion bilingue</td><td><span class="badge amplia">Amplia</span></td><td>0</td><td>0</td><td>—</td><td class="num-zero">0</td></tr>
+          <tr><td>estudiar lingüística aplicada</td><td><span class="badge amplia">Amplia</span></td><td>0</td><td>0</td><td>—</td><td class="num-zero">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p>Urgente: añadir KWs de alta intención como <strong>"maestría lingüística Colombia"</strong>, <strong>"maestría enseñanza inglés Bogotá"</strong>, <strong>"maestría bilingüismo"</strong>. La KW de marca genérica no está convirtiendo.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     11 MAESTRIA SALUD PUBLICA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-saludpub">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 11</div>
+      <h1>Mtra. Salud Pública</h1>
+      <div class="prog-sub">Maestría — Ciencias de la Salud</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-maestria-salud-publica-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">2,827</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">600</div><div class="kl">Clics</div><div class="ks">CTR 21.2%</div></div>
+    <div class="kpi-card"><div class="kv">$467K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $778</div></div>
+    <div class="kpi-card"><div class="kv">9</div><div class="kl">Conversiones</div><div class="ks">CPL $51,845</div></div>
+    <div class="kpi-card"><div class="kv">15</div><div class="kl">KWs activas</div><div class="ks">Exacta + Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'sp-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'sp-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="sp-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>3,300,000 – 3,900,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:82%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Bogotá +20km</span>
+          <span class="chip hl">🎂 26–45 años</span>
+        </div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Public university</span><span class="chip hl">Salud</span>
+          <span class="chip hl">Training</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Bachelor's degree</span><span class="chip">Postgraduate education</span>
+          <span class="chip">Master's degree</span><span class="chip">Education</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> College grad, Some grad school, Master's degree, Professional degree, Doctorate degree<br>
+          <strong>Escuela:</strong> Medical school &nbsp;|&nbsp; <strong>Campo:</strong> Medicine &nbsp;|&nbsp; <strong>Cargo:</strong> Doctor, Medico Interno, Doctor (Dr)
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia <strong>3.3M–3.9M</strong> en Bogotá. El campo "Medicine" y cargo "Doctor" es correcto para capturar médicos interesados en posgrado en salud pública. Considerar añadir "Public health" como interés diferenciador.</p></div>
+  </div>
+  <div class="tab-content" id="sp-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>[universidad Juan N. Corpas]</td><td><span class="badge exacta">Exacta</span></td><td>1,863</td><td>489</td><td>26.2%</td><td class="num-good">9</td><td>$686</td></tr>
+          <tr><td>especializacion en salud publica</td><td><span class="badge amplia">Amplia</span></td><td>586</td><td>74</td><td>12.6%</td><td class="num-zero">0</td><td>$1,209</td></tr>
+          <tr><td>[maestria en salud publica]</td><td><span class="badge exacta">Exacta</span></td><td>108</td><td>11</td><td>10.2%</td><td class="num-zero">0</td><td>$1,223</td></tr>
+          <tr><td>posgrado salud publica</td><td><span class="badge amplia">Amplia</span></td><td>108</td><td>5</td><td>4.6%</td><td class="num-zero">0</td><td>$1,201</td></tr>
+          <tr><td>[maestría en salud pública]</td><td><span class="badge exacta">Exacta</span></td><td>36</td><td>7</td><td>19.4%</td><td class="num-zero">0</td><td>$1,463</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p><strong>El 100% de las conversiones</strong> viene de [universidad Juan N. Corpas] exacta. Las KWs genéricas de salud pública tienen 600+ clics y 0 conversiones — revisar mensaje del anuncio y landing para esas KWs.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     12 ESP MED FAMILIAR
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-medfam">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 12</div>
+      <h1>Esp. Med. Familiar</h1>
+      <div class="prog-sub">Especialización en Medicina Familiar Integral</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_posgrado-especializacion-medicina-familiar-integral-2026-2</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">518</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">48</div><div class="kl">Clics</div><div class="ks">CTR 9.3%</div></div>
+    <div class="kpi-card"><div class="kv">$84K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $1,752</div></div>
+    <div class="kpi-card"><div class="kv">1</div><div class="kl">Conversión</div><div class="ks">CPL $84,078</div></div>
+    <div class="kpi-card"><div class="kv">9</div><div class="kl">KWs activas</div><div class="ks">Todo Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'mf-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'mf-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="mf-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>6,100,000 – 7,200,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:90%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Colombia: Cundinamarca</span>
+          <span class="chip hl">🎂 26–45 años</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Edad como sugerencia ✓</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Household</span><span class="chip hl">Salud</span>
+          <span class="chip">University</span><span class="chip">Graduate school</span>
+          <span class="chip">Postgraduate education</span><span class="chip">Bachelor's degree</span>
+          <span class="chip">Higher education</span><span class="chip">Master's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> Some grad school, Master's degree, Professional degree, Doctorate degree<br>
+          <strong>Empleadores:</strong> Familia &nbsp;|&nbsp; <strong>Cargo:</strong> Doctor, Medico Interno, Doctor (Dr)
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>⚠️ La segmentación es muy genérica para medicina familiar. Considerar añadir: intereses "Family medicine", "General practitioner", "Primary care" y campo de estudio "Medicine" para aumentar relevancia del segmento.</p></div>
+  </div>
+  <div class="tab-content" id="mf-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>especialización en medicina familiar</td><td><span class="badge amplia">Amplia</span></td><td>445</td><td>39</td><td>8.8%</td><td>1</td><td>$1,522</td></tr>
+          <tr><td>estudiar medicina familiar</td><td><span class="badge amplia">Amplia</span></td><td>73</td><td>9</td><td>12.3%</td><td class="num-zero">0</td><td>$2,747</td></tr>
+          <tr><td>especializaciones médicas colombia</td><td><span class="badge amplia">Amplia</span></td><td>0</td><td>0</td><td>—</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>esp. medicina familiar a distancia</td><td><span class="badge amplia">Amplia</span></td><td>0</td><td>0</td><td>—</td><td class="num-zero">0</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p>Volumen muy bajo (518 impr.) con CPL alto de $84K. Añadir urgente: KWs de marca Corpas en exacta y términos como <strong>"MR medicina familiar Colombia"</strong>, <strong>"medicina familiar residencia médica"</strong> para capturar demanda específica.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     13 MBA
+═══════════════════════════════════════ -->
+<div class="prog-panel" id="panel-mba">
+  <div class="prog-header">
+    <div class="prog-header-left">
+      <div class="prog-tag">Posgrado · 13</div>
+      <h1>MBA</h1>
+      <div class="prog-sub">Master of Business Administration — Cobertura Nacional</div>
+    </div>
+    <div class="camp-pill">Google Ads<br><span>adcom_ucorpas_gg_acq_search_mba</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kv">2,112</div><div class="kl">Impresiones</div><div class="ks">Google Search</div></div>
+    <div class="kpi-card"><div class="kv">136</div><div class="kl">Clics</div><div class="ks">CTR 6.4%</div></div>
+    <div class="kpi-card"><div class="kv">$362K</div><div class="kl">Inversión COP</div><div class="ks">CPC prom. $2,660</div></div>
+    <div class="kpi-card"><div class="kv">4</div><div class="kl">Conversiones</div><div class="ks">CPL $90,440</div></div>
+    <div class="kpi-card"><div class="kv">11</div><div class="kl">KWs activas</div><div class="ks">Todo Amplia</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'mba-meta')"><span class="tab-icon">📘</span>Meta Ads</div>
+    <div class="tab" onclick="showTab(this,'mba-google')"><span class="tab-icon">🔍</span>Google Ads</div>
+  </div>
+  <div class="tab-content active" id="mba-meta">
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Audiencia estimada</h3>
+        <div class="aud-size-badge"><span class="dot"></span>20,300,000 – 23,900,000 personas</div>
+        <div class="aud-bar-wrap"><div class="aud-bar" style="width:97%"></div></div>
+        <div class="aud-bar-labels"><span>Estrecha</span><span>Amplia</span></div>
+      </div>
+      <div class="meta-card">
+        <h3>Segmentación</h3>
+        <div class="meta-chips">
+          <span class="chip hl">📍 Medellín · Barranquilla</span>
+          <span class="chip hl">📍 Bucaramanga · Cali</span>
+          <span class="chip hl">📍 Bogotá +25km · Cartagena</span>
+          <span class="chip hl">🎂 25–54 años</span>
+        </div>
+        <div class="meta-detail" style="margin-top:6px">Única campaña con cobertura nacional (6 ciudades).</div>
+      </div>
+      <div class="meta-card full">
+        <h3>Detailed Targeting — Intereses y segmentos</h3>
+        <div class="meta-chips">
+          <span class="chip hl">Master of Business Administration</span>
+          <span class="chip hl">Business class</span><span class="chip hl">Luxury</span>
+          <span class="chip hl">Frequent international travelers</span>
+          <span class="chip">Public university</span><span class="chip">Adventure travel</span>
+          <span class="chip">Luxury Resorts</span><span class="chip">Private university</span>
+          <span class="chip">Online shopping</span><span class="chip">Master's degree</span>
+        </div>
+        <div class="meta-detail" style="margin-top:8px">
+          <strong>Nivel educativo:</strong> College grad, Master's degree, Professional degree, Doctorate degree<br>
+          <strong>Campo:</strong> MBA (Master Degree of Business Administration)<br>
+          <strong>Empleadores:</strong> MBA &nbsp;|&nbsp; <strong>Cargo:</strong> Doctor, Medical Doctor/Orthopaedic, Medical Doctor MD/Medical Director<br>
+          <strong>Escuela:</strong> Facultad de Medicina &nbsp;|&nbsp; <strong>Industria:</strong> Healthcare and Medical Services
+        </div>
+      </div>
+    </div>
+    <div class="insight-bar"><p>Audiencia más grande del portafolio: <strong>20.3M–23.9M</strong> en 6 ciudades. El enfoque en perfil médico-ejecutivo (Medical Director, Luxury, Frequent travelers) es una apuesta diferenciadora para MBA orientado a directivos del sector salud.</p></div>
+  </div>
+  <div class="tab-content" id="mba-google" style="display:none">
+    <div class="card">
+      <div class="card-title">Top Keywords — Activas</div>
+      <table class="kw-table">
+        <thead><tr><th>Palabra clave</th><th>Concordancia</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Conv.</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr class="top"><td>maestrias virtuales</td><td><span class="badge amplia">Amplia</span></td><td>635</td><td>41</td><td>6.5%</td><td>2</td><td>$2,306</td></tr>
+          <tr><td>mba virtual</td><td><span class="badge amplia">Amplia</span></td><td>373</td><td>26</td><td>7.0%</td><td>1</td><td>$3,575</td></tr>
+          <tr><td>mba colombia</td><td><span class="badge amplia">Amplia</span></td><td>372</td><td>22</td><td>5.9%</td><td>1</td><td>$2,545</td></tr>
+          <tr><td>mba</td><td><span class="badge amplia">Amplia</span></td><td>326</td><td>26</td><td>8.0%</td><td class="num-zero">0</td><td>$2,124</td></tr>
+          <tr><td>maestria virtual</td><td><span class="badge amplia">Amplia</span></td><td>312</td><td>17</td><td>5.4%</td><td class="num-zero">0</td><td>$3,253</td></tr>
+          <tr><td>administracion y dirección empresas</td><td><span class="badge amplia">Amplia</span></td><td>86</td><td>3</td><td>3.5%</td><td class="num-zero">0</td><td>$1,989</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight-bar"><p>CPL más alto del portafolio ($90K). Todo en concordancia amplia — añadir exactas de marca: [mba corpas], [mba juan n corpas]. Probar concordancia de frase "mba colombia" para mejorar calidad del tráfico.</p></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ── SHOW PROGRAM ──
+function showProg(el) {
+  document.querySelectorAll('.prog-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.prog-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const panel = document.getElementById('panel-' + el.dataset.panel);
+  if (panel) panel.classList.add('active');
+  document.getElementById('content').scrollTop = 0;
+}
+
+// ── SHOW TAB ──
+function showTab(tabEl, contentId) {
+  const panel = tabEl.closest('.prog-panel');
+  panel.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  panel.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  tabEl.classList.add('active');
+  document.getElementById(contentId).style.display = 'block';
+}
+
+// ── FILTER BY CATEGORY ──
+function filterCat(cat, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.prog-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+  // Auto-select first visible
+  const first = document.querySelector('.prog-item:not(.hidden)');
+  if (first && !first.classList.contains('active')) showProg(first);
+}
+
+// ── SEARCH ──
+function searchProgs(q) {
+  const query = q.toLowerCase().trim();
+  let visibleCount = 0;
+  document.querySelectorAll('.prog-item').forEach(item => {
+    const name = item.querySelector('.pname').textContent.toLowerCase();
+    const match = !query || name.includes(query);
+    item.style.display = match ? '' : 'none';
+    if (match) visibleCount++;
+  });
+  document.getElementById('noResults').classList.toggle('show', visibleCount === 0);
+}
+
+// ── KEYBOARD NAV ──
+document.addEventListener('keydown', e => {
+  if (document.activeElement.tagName === 'INPUT') return;
+  const items = [...document.querySelectorAll('.prog-item:not(.hidden):not([style*="none"])')];
+  const cur = items.findIndex(i => i.classList.contains('active'));
+  if (e.key === 'ArrowDown' && cur < items.length - 1) { e.preventDefault(); showProg(items[cur + 1]); }
+  if (e.key === 'ArrowUp'   && cur > 0)                 { e.preventDefault(); showProg(items[cur - 1]); }
+});
+</script>
+</body>
+</html>
